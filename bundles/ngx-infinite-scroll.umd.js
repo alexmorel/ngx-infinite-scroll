@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('rxjs/add/observable/fromEvent'), require('rxjs/add/observable/of'), require('rxjs/add/operator/filter'), require('rxjs/add/operator/mergeMap'), require('rxjs/add/operator/map'), require('rxjs/add/operator/do'), require('rxjs/add/operator/sampleTime'), require('rxjs/Observable'), require('rxjs/observable/of')) :
-	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'rxjs/add/observable/fromEvent', 'rxjs/add/observable/of', 'rxjs/add/operator/filter', 'rxjs/add/operator/mergeMap', 'rxjs/add/operator/map', 'rxjs/add/operator/do', 'rxjs/add/operator/sampleTime', 'rxjs/Observable', 'rxjs/observable/of'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng.ngxInfiniteScroll = global.ng.ngxInfiniteScroll || {}),global.ng.core,null,null,null,null,null,null,null,global.Rx,global.rxjs_observable_of));
-}(this, (function (exports,_angular_core,rxjs_add_observable_fromEvent,rxjs_add_observable_of,rxjs_add_operator_filter,rxjs_add_operator_mergeMap,rxjs_add_operator_map,rxjs_add_operator_do,rxjs_add_operator_sampleTime,rxjs_Observable,rxjs_observable_of) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('rxjs/observable/of'), require('rxjs/observable/fromEvent'), require('rxjs/operators')) :
+	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'rxjs/observable/of', 'rxjs/observable/fromEvent', 'rxjs/operators'], factory) :
+	(factory((global.ng = global.ng || {}, global.ng.ngxInfiniteScroll = global.ng.ngxInfiniteScroll || {}),global.ng.core,global.rxjs_observable_of,global.rxjs_observable_fromEvent,global.rxjs_operators));
+}(this, (function (exports,_angular_core,rxjs_observable_of,rxjs_observable_fromEvent,rxjs_operators) { 'use strict';
 
 /**
  * @param {?} selector
@@ -48,6 +48,24 @@ function inputPropChanged(prop) {
 function hasWindowDefined() {
     return typeof window !== 'undefined';
 }
+var VerticalProps = {
+    clientHeight: "clientHeight",
+    offsetHeight: "offsetHeight",
+    scrollHeight: "scrollHeight",
+    pageYOffset: "pageYOffset",
+    offsetTop: "offsetTop",
+    scrollTop: "scrollTop",
+    top: "top"
+};
+var HorizontalProps = {
+    clientHeight: "clientWidth",
+    offsetHeight: "offsetWidth",
+    scrollHeight: "scrollWidth",
+    pageYOffset: "pageXOffset",
+    offsetTop: "offsetLeft",
+    scrollTop: "scrollLeft",
+    top: "left"
+};
 var AxisResolver = (function () {
     /**
      * @param {?=} vertical
@@ -55,35 +73,50 @@ var AxisResolver = (function () {
     function AxisResolver(vertical) {
         if (vertical === void 0) { vertical = true; }
         this.vertical = vertical;
+        this.propsMap = vertical ? VerticalProps : HorizontalProps;
     }
     /**
      * @return {?}
      */
-    AxisResolver.prototype.clientHeightKey = function () { return this.vertical ? 'clientHeight' : 'clientWidth'; };
+    AxisResolver.prototype.clientHeightKey = function () {
+        return this.propsMap.clientHeight;
+    };
     /**
      * @return {?}
      */
-    AxisResolver.prototype.offsetHeightKey = function () { return this.vertical ? 'offsetHeight' : 'offsetWidth'; };
+    AxisResolver.prototype.offsetHeightKey = function () {
+        return this.propsMap.offsetHeight;
+    };
     /**
      * @return {?}
      */
-    AxisResolver.prototype.scrollHeightKey = function () { return this.vertical ? 'scrollHeight' : 'scrollWidth'; };
+    AxisResolver.prototype.scrollHeightKey = function () {
+        return this.propsMap.scrollHeight;
+    };
     /**
      * @return {?}
      */
-    AxisResolver.prototype.pageYOffsetKey = function () { return this.vertical ? 'pageYOffset' : 'pageXOffset'; };
+    AxisResolver.prototype.pageYOffsetKey = function () {
+        return this.propsMap.pageYOffset;
+    };
     /**
      * @return {?}
      */
-    AxisResolver.prototype.offsetTopKey = function () { return this.vertical ? 'offsetTop' : 'offsetLeft'; };
+    AxisResolver.prototype.offsetTopKey = function () {
+        return this.propsMap.offsetTop;
+    };
     /**
      * @return {?}
      */
-    AxisResolver.prototype.scrollTopKey = function () { return this.vertical ? 'scrollTop' : 'scrollLeft'; };
+    AxisResolver.prototype.scrollTopKey = function () {
+        return this.propsMap.scrollTop;
+    };
     /**
      * @return {?}
      */
-    AxisResolver.prototype.topKey = function () { return this.vertical ? 'top' : 'left'; };
+    AxisResolver.prototype.topKey = function () {
+        return this.propsMap.top;
+    };
     return AxisResolver;
 }());
 /**
@@ -200,7 +233,8 @@ function extractHeightForElement(_a) {
  */
 function getElementHeight(elem, isWindow, offsetHeightKey, clientHeightKey) {
     if (isNaN(elem[offsetHeightKey])) {
-        return getDocumentElement(isWindow, elem)[clientHeightKey];
+        var /** @type {?} */ docElem = getDocumentElement(isWindow, elem);
+        return docElem ? docElem[clientHeightKey] : 0;
     }
     else {
         return elem[offsetHeightKey];
@@ -375,34 +409,28 @@ function createScroller(config) {
         up: config.upDistance,
         down: config.downDistance
     };
-    return attachScrollEvent(options)
-        .mergeMap(function (ev) { return rxjs_observable_of.of(calculatePoints(element, resolver)); })
-        .map(function (positionStats) { return toInfiniteScrollParams(scrollState.lastScrollPosition, positionStats, distance); })
-        .do(function (_a) {
+    return attachScrollEvent(options).pipe(rxjs_operators.mergeMap(function (ev) { return rxjs_observable_of.of(calculatePoints(element, resolver)); }), rxjs_operators.map(function (positionStats) { return toInfiniteScrollParams(scrollState.lastScrollPosition, positionStats, distance); }), rxjs_operators.tap(function (_a) {
         var stats = _a.stats, scrollDown = _a.scrollDown;
         return updateScrollState(scrollState, stats.scrolled, stats.totalToScroll);
-    })
-        .filter(function (_a) {
+    }), rxjs_operators.filter(function (_a) {
         var fire = _a.fire, scrollDown = _a.scrollDown, totalToScroll = _a.stats.totalToScroll;
-        return shouldTriggerEvents(fire, config.alwaysCallback, isTriggeredScroll(totalToScroll, scrollState, scrollDown));
-    })
-        .do(function (_a) {
+        return shouldTriggerEvents(config.alwaysCallback, fire, isTriggeredScroll(totalToScroll, scrollState, scrollDown));
+    }), rxjs_operators.tap(function (_a) {
         var scrollDown = _a.scrollDown, totalToScroll = _a.stats.totalToScroll;
         updateTriggeredFlag(totalToScroll, scrollState, true, scrollDown);
-    })
-        .map(toInfiniteScrollAction);
+    }), rxjs_operators.map(toInfiniteScrollAction));
 }
 /**
  * @param {?} options
  * @return {?}
  */
 function attachScrollEvent(options) {
-    var /** @type {?} */ obs = rxjs_Observable.Observable.fromEvent(options.container, 'scroll');
+    var /** @type {?} */ obs = rxjs_observable_fromEvent.fromEvent(options.container, "scroll");
     // For an unknown reason calling `sampleTime()` causes trouble for many users, even with `options.throttle = 0`.
     // Let's avoid calling the function unless needed.
     // See https://github.com/orizens/ngx-infinite-scroll/issues/198
     if (options.throttle) {
-        obs = obs.sampleTime(options.throttle);
+        obs = obs.pipe(rxjs_operators.sampleTime(options.throttle));
     }
     return obs;
 }
@@ -421,8 +449,8 @@ function toInfiniteScrollParams(lastScrollPosition, stats, distance) {
     };
 }
 var InfiniteScrollActions = {
-    DOWN: '[NGX_ISE] DOWN',
-    UP: '[NGX_ISE] UP'
+    DOWN: "[NGX_ISE] DOWN",
+    UP: "[NGX_ISE] UP"
 };
 /**
  * @param {?} response

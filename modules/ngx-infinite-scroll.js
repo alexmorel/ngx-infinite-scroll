@@ -1,13 +1,7 @@
 import { Directive, ElementRef, EventEmitter, Input, NgModule, NgZone, Output } from '@angular/core';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/sampleTime';
-import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { filter, map, mergeMap, sampleTime, tap } from 'rxjs/operators';
 
 /**
  * @param {?} selector
@@ -54,41 +48,74 @@ function hasWindowDefined() {
     return typeof window !== 'undefined';
 }
 
+const VerticalProps = {
+    clientHeight: "clientHeight",
+    offsetHeight: "offsetHeight",
+    scrollHeight: "scrollHeight",
+    pageYOffset: "pageYOffset",
+    offsetTop: "offsetTop",
+    scrollTop: "scrollTop",
+    top: "top"
+};
+const HorizontalProps = {
+    clientHeight: "clientWidth",
+    offsetHeight: "offsetWidth",
+    scrollHeight: "scrollWidth",
+    pageYOffset: "pageXOffset",
+    offsetTop: "offsetLeft",
+    scrollTop: "scrollLeft",
+    top: "left"
+};
 class AxisResolver {
     /**
      * @param {?=} vertical
      */
     constructor(vertical = true) {
         this.vertical = vertical;
+        this.propsMap = vertical ? VerticalProps : HorizontalProps;
     }
     /**
      * @return {?}
      */
-    clientHeightKey() { return this.vertical ? 'clientHeight' : 'clientWidth'; }
+    clientHeightKey() {
+        return this.propsMap.clientHeight;
+    }
     /**
      * @return {?}
      */
-    offsetHeightKey() { return this.vertical ? 'offsetHeight' : 'offsetWidth'; }
+    offsetHeightKey() {
+        return this.propsMap.offsetHeight;
+    }
     /**
      * @return {?}
      */
-    scrollHeightKey() { return this.vertical ? 'scrollHeight' : 'scrollWidth'; }
+    scrollHeightKey() {
+        return this.propsMap.scrollHeight;
+    }
     /**
      * @return {?}
      */
-    pageYOffsetKey() { return this.vertical ? 'pageYOffset' : 'pageXOffset'; }
+    pageYOffsetKey() {
+        return this.propsMap.pageYOffset;
+    }
     /**
      * @return {?}
      */
-    offsetTopKey() { return this.vertical ? 'offsetTop' : 'offsetLeft'; }
+    offsetTopKey() {
+        return this.propsMap.offsetTop;
+    }
     /**
      * @return {?}
      */
-    scrollTopKey() { return this.vertical ? 'scrollTop' : 'scrollLeft'; }
+    scrollTopKey() {
+        return this.propsMap.scrollTop;
+    }
     /**
      * @return {?}
      */
-    topKey() { return this.vertical ? 'top' : 'left'; }
+    topKey() {
+        return this.propsMap.top;
+    }
 }
 
 /**
@@ -204,7 +231,8 @@ function extractHeightForElement({ container, isWindow, axis }) {
  */
 function getElementHeight(elem, isWindow, offsetHeightKey, clientHeightKey) {
     if (isNaN(elem[offsetHeightKey])) {
-        return getDocumentElement(isWindow, elem)[clientHeightKey];
+        const /** @type {?} */ docElem = getDocumentElement(isWindow, elem);
+        return docElem ? docElem[clientHeightKey] : 0;
     }
     else {
         return elem[offsetHeightKey];
@@ -382,27 +410,21 @@ function createScroller(config) {
         up: config.upDistance,
         down: config.downDistance
     };
-    return attachScrollEvent(options)
-        .mergeMap((ev) => of(calculatePoints(element, resolver)))
-        .map((positionStats) => toInfiniteScrollParams(scrollState.lastScrollPosition, positionStats, distance))
-        .do(({ stats, scrollDown }) => updateScrollState(scrollState, stats.scrolled, stats.totalToScroll))
-        .filter(({ fire, scrollDown, stats: { totalToScroll } }) => shouldTriggerEvents(fire, config.alwaysCallback, isTriggeredScroll(totalToScroll, scrollState, scrollDown)))
-        .do(({ scrollDown, stats: { totalToScroll } }) => {
+    return attachScrollEvent(options).pipe(mergeMap((ev) => of(calculatePoints(element, resolver))), map((positionStats) => toInfiniteScrollParams(scrollState.lastScrollPosition, positionStats, distance)), tap(({ stats, scrollDown }) => updateScrollState(scrollState, stats.scrolled, stats.totalToScroll)), filter(({ fire, scrollDown, stats: { totalToScroll } }) => shouldTriggerEvents(config.alwaysCallback, fire, isTriggeredScroll(totalToScroll, scrollState, scrollDown))), tap(({ scrollDown, stats: { totalToScroll } }) => {
         updateTriggeredFlag(totalToScroll, scrollState, true, scrollDown);
-    })
-        .map(toInfiniteScrollAction);
+    }), map(toInfiniteScrollAction));
 }
 /**
  * @param {?} options
  * @return {?}
  */
 function attachScrollEvent(options) {
-    let /** @type {?} */ obs = Observable.fromEvent(options.container, 'scroll');
+    let /** @type {?} */ obs = fromEvent(options.container, "scroll");
     // For an unknown reason calling `sampleTime()` causes trouble for many users, even with `options.throttle = 0`.
     // Let's avoid calling the function unless needed.
     // See https://github.com/orizens/ngx-infinite-scroll/issues/198
     if (options.throttle) {
-        obs = obs.sampleTime(options.throttle);
+        obs = obs.pipe(sampleTime(options.throttle));
     }
     return obs;
 }
@@ -421,8 +443,8 @@ function toInfiniteScrollParams(lastScrollPosition, stats, distance) {
     };
 }
 const InfiniteScrollActions = {
-    DOWN: '[NGX_ISE] DOWN',
-    UP: '[NGX_ISE] UP'
+    DOWN: "[NGX_ISE] DOWN",
+    UP: "[NGX_ISE] UP"
 };
 /**
  * @param {?} response

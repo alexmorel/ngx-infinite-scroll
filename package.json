@@ -1,31 +1,26 @@
 {
-  "_args": [
-    [
-      "ngx-infinite-scroll@0.8.3",
-      "/Users/alexmorel/Documents/Git/com.irealite.cnh.userportal"
-    ]
-  ],
-  "_from": "ngx-infinite-scroll@0.8.3",
-  "_id": "ngx-infinite-scroll@0.8.3",
+  "_from": "ngx-infinite-scroll@^0.8.4",
+  "_id": "ngx-infinite-scroll@0.8.4",
   "_inBundle": false,
-  "_integrity": "sha512-jA8HPtOTk0RVvukZJg65ut9eEQ3anjCtRp5kf81oVB3nByMj1bREh7lK1rWlEkyflANbMDlit8f0gTlkLZOHrw==",
+  "_integrity": "sha512-pXNYQiOKONOEQZeHAbUoyB0cru7e57B6fEW1hRd+pUKSNpzj3jM67Xww7rMEIl+ESgJvW7dJ72iR8S7F7YludQ==",
   "_location": "/ngx-infinite-scroll",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "range",
     "registry": true,
-    "raw": "ngx-infinite-scroll@0.8.3",
+    "raw": "ngx-infinite-scroll@^0.8.4",
     "name": "ngx-infinite-scroll",
     "escapedName": "ngx-infinite-scroll",
-    "rawSpec": "0.8.3",
+    "rawSpec": "^0.8.4",
     "saveSpec": null,
-    "fetchSpec": "0.8.3"
+    "fetchSpec": "^0.8.4"
   },
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/ngx-infinite-scroll/-/ngx-infinite-scroll-0.8.3.tgz",
-  "_spec": "0.8.3",
+  "_resolved": "https://registry.npmjs.org/ngx-infinite-scroll/-/ngx-infinite-scroll-0.8.4.tgz",
+  "_shasum": "0162b406f63b05412b4d47e3201b371e4f2f96d8",
+  "_spec": "ngx-infinite-scroll@^0.8.4",
   "_where": "/Users/alexmorel/Documents/Git/com.irealite.cnh.userportal",
   "author": {
     "name": "Oren Farhi",
@@ -34,14 +29,9 @@
   "bugs": {
     "url": "https://github.com/orizens/ngx-infinite-scroll/issues"
   },
-  "collective": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/ngx-infinite-scroll",
-    "logo": "https://opencollective.com/ngx-infinite-scroll/logo.txt"
-  },
-  "dependencies": {
-    "opencollective-postinstall": "^2.0.1"
-  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
   "description": "An infinite scroll directive for Angular compatible with AoT compilation and Tree shaking",
   "devDependencies": {
     "@angular/animations": "^4.0.0",
@@ -67,7 +57,7 @@
     "karma-webpack": "2.0.3",
     "reflect-metadata": "0.1.10",
     "rollup": "0.41.6",
-    "rxjs": "5.5.2",
+    "rxjs": "^5.5.6",
     "shelljs": "0.7.7",
     "sorcery": "0.10.0",
     "ts-helpers": "1.1.2",
@@ -103,7 +93,6 @@
     "compodoc": "compodoc -p tsconfig.json",
     "compodoc-serve": "compodoc -s",
     "pack-lib": "npm pack ./dist",
-    "postinstall": "opencollective-postinstall",
     "publish-lib": "npm publish ./dist",
     "publish:beta": "npm publish --tag next ./dist",
     "serve:prod": "npm run build && lite-server -c ./example/bs-config.json",
@@ -112,5 +101,5 @@
     "transpile": "ngc -p ./tsconfig.json"
   },
   "typings": "./ngx-infinite-scroll.d.ts",
-  "version": "0.8.3"
+  "version": "0.8.4"
 }
