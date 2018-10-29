@@ -34,7 +34,13 @@
   "bugs": {
     "url": "https://github.com/orizens/ngx-infinite-scroll/issues"
   },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/ngx-infinite-scroll",
+    "logo": "https://opencollective.com/ngx-infinite-scroll/logo.txt"
+  },
   "dependencies": {
+    "opencollective-postinstall": "^2.0.1"
   },
   "description": "An infinite scroll directive for Angular compatible with AoT compilation and Tree shaking",
   "devDependencies": {
@@ -97,6 +103,7 @@
     "compodoc": "compodoc -p tsconfig.json",
     "compodoc-serve": "compodoc -s",
     "pack-lib": "npm pack ./dist",
+    "postinstall": "opencollective-postinstall",
     "publish-lib": "npm publish ./dist",
     "publish:beta": "npm publish --tag next ./dist",
     "serve:prod": "npm run build && lite-server -c ./example/bs-config.json",
