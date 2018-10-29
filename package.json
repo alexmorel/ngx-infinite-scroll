@@ -1,5 +1,5 @@
 {
-  "_from": "ngx-infinite-scroll@^0.8.4",
+  "_from": "ngx-infinite-scroll@^0.8.3",
   "_id": "ngx-infinite-scroll@0.8.4",
   "_inBundle": false,
   "_integrity": "sha512-pXNYQiOKONOEQZeHAbUoyB0cru7e57B6fEW1hRd+pUKSNpzj3jM67Xww7rMEIl+ESgJvW7dJ72iR8S7F7YludQ==",
@@ -8,19 +8,19 @@
   "_requested": {
     "type": "range",
     "registry": true,
-    "raw": "ngx-infinite-scroll@^0.8.4",
+    "raw": "ngx-infinite-scroll@^0.8.3",
     "name": "ngx-infinite-scroll",
     "escapedName": "ngx-infinite-scroll",
-    "rawSpec": "^0.8.4",
+    "rawSpec": "^0.8.3",
     "saveSpec": null,
-    "fetchSpec": "^0.8.4"
+    "fetchSpec": "^0.8.3"
   },
   "_requiredBy": [
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/ngx-infinite-scroll/-/ngx-infinite-scroll-0.8.4.tgz",
   "_shasum": "0162b406f63b05412b4d47e3201b371e4f2f96d8",
-  "_spec": "ngx-infinite-scroll@^0.8.4",
+  "_spec": "ngx-infinite-scroll@^0.8.3",
   "_where": "/Users/alexmorel/Documents/Git/com.irealite.cnh.userportal",
   "author": {
     "name": "Oren Farhi",
@@ -30,6 +30,11 @@
     "url": "https://github.com/orizens/ngx-infinite-scroll/issues"
   },
   "bundleDependencies": false,
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/ngx-infinite-scroll",
+    "logo": "https://opencollective.com/ngx-infinite-scroll/logo.txt"
+  },
   "dependencies": {},
   "deprecated": false,
   "description": "An infinite scroll directive for Angular compatible with AoT compilation and Tree shaking",
