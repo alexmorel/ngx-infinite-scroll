@@ -1,39 +1,42 @@
 {
-  "name": "ngx-infinite-scroll",
-  "version": "0.8.4",
-  "description":
-    "An infinite scroll directive for Angular compatible with AoT compilation and Tree shaking",
-  "main": "./bundles/ngx-infinite-scroll.umd.js",
-  "module": "./modules/ngx-infinite-scroll.es5.js",
-  "es2015": "./modules/ngx-infinite-scroll.js",
-  "scripts": {
-    "build": "node build.js",
-    "test": "karma start",
-    "test:watch": "karma start --single-run=false",
-    "pack-lib": "npm pack ./dist",
-    "publish-lib": "npm publish ./dist",
-    "publish:beta": "npm publish --tag next ./dist",
-    "compodoc": "compodoc -p tsconfig.json",
-    "compodoc-serve": "compodoc -s",
-    "transpile": "ngc -p ./tsconfig.json",
-    "serve:prod": "npm run build && lite-server -c ./example/bs-config.json"
+  "_args": [
+    [
+      "ngx-infinite-scroll@0.8.3",
+      "/Users/alexmorel/Documents/Git/com.irealite.cnh.userportal"
+    ]
+  ],
+  "_from": "ngx-infinite-scroll@0.8.3",
+  "_id": "ngx-infinite-scroll@0.8.3",
+  "_inBundle": false,
+  "_integrity": "sha512-jA8HPtOTk0RVvukZJg65ut9eEQ3anjCtRp5kf81oVB3nByMj1bREh7lK1rWlEkyflANbMDlit8f0gTlkLZOHrw==",
+  "_location": "/ngx-infinite-scroll",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "ngx-infinite-scroll@0.8.3",
+    "name": "ngx-infinite-scroll",
+    "escapedName": "ngx-infinite-scroll",
+    "rawSpec": "0.8.3",
+    "saveSpec": null,
+    "fetchSpec": "0.8.3"
   },
-  "typings": "./ngx-infinite-scroll.d.ts",
-  "author": "Oren Farhi (orizens.com)",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/orizens/ngx-infinite-scroll.git"
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/ngx-infinite-scroll/-/ngx-infinite-scroll-0.8.3.tgz",
+  "_spec": "0.8.3",
+  "_where": "/Users/alexmorel/Documents/Git/com.irealite.cnh.userportal",
+  "author": {
+    "name": "Oren Farhi",
+    "url": "orizens.com"
   },
   "bugs": {
     "url": "https://github.com/orizens/ngx-infinite-scroll/issues"
   },
-  "homepage": "https://github.com/orizens/ngx-infinite-scroll",
-  "keywords": ["angular", "javascript", "typescript"],
-  "license": "MIT",
-  "peerDependencies": {
-    "@angular/common": ">= 4.0.0",
-    "@angular/core": ">= 4.0.0"
+  "dependencies": {
   },
+  "description": "An infinite scroll directive for Angular compatible with AoT compilation and Tree shaking",
   "devDependencies": {
     "@angular/animations": "^4.0.0",
     "@angular/common": "^4.0.0",
@@ -58,7 +61,7 @@
     "karma-webpack": "2.0.3",
     "reflect-metadata": "0.1.10",
     "rollup": "0.41.6",
-    "rxjs": "^5.5.6",
+    "rxjs": "5.5.2",
     "shelljs": "0.7.7",
     "sorcery": "0.10.0",
     "ts-helpers": "1.1.2",
@@ -70,6 +73,37 @@
     "yargs": "7.0.2",
     "zone.js": "0.8.5"
   },
-  "dependencies": {
-  }
+  "es2015": "./modules/ngx-infinite-scroll.js",
+  "homepage": "https://github.com/orizens/ngx-infinite-scroll",
+  "keywords": [
+    "angular",
+    "javascript",
+    "typescript"
+  ],
+  "license": "MIT",
+  "main": "./bundles/ngx-infinite-scroll.umd.js",
+  "module": "./modules/ngx-infinite-scroll.es5.js",
+  "name": "ngx-infinite-scroll",
+  "peerDependencies": {
+    "@angular/common": ">= 4.0.0",
+    "@angular/core": ">= 4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/orizens/ngx-infinite-scroll.git"
+  },
+  "scripts": {
+    "build": "node build.js",
+    "compodoc": "compodoc -p tsconfig.json",
+    "compodoc-serve": "compodoc -s",
+    "pack-lib": "npm pack ./dist",
+    "publish-lib": "npm publish ./dist",
+    "publish:beta": "npm publish --tag next ./dist",
+    "serve:prod": "npm run build && lite-server -c ./example/bs-config.json",
+    "test": "karma start",
+    "test:watch": "karma start --single-run=false",
+    "transpile": "ngc -p ./tsconfig.json"
+  },
+  "typings": "./ngx-infinite-scroll.d.ts",
+  "version": "0.8.3"
 }
